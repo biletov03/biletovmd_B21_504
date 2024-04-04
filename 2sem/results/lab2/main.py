@@ -38,10 +38,14 @@ def create_bin_image(start_img_path: str, result_img_path: str) -> None:
 
 
 if __name__ == "__main__":
-    images = [["1.jpeg", "2.jpg"], ["1.png", "2.png", "3.png"], ["1.jpeg", "2.jpeg", "3.jpeg"], ["1.png", "2.png","3.png","4.jpg","5.jpeg",]]
-
+    images = [
+        ["1.jpeg", "2.jpg"],
+        ["1.png", "2.png", "3.png"],
+        ["1.jpeg", "2.jpeg", "3.jpeg"],
+        ["1.png", "2.png", "3.png", "4.jpg", "5.jpeg"]
+    ]
 
     for i in range(1, len(images) + 1):
         for element in images[i - 1]:
             both_part = f"{i}/{element}"
-            create_bin_image(f"imgs/{both_part}", f"bin_imgs/{both_part}")
+            create_bin_image(f"input/{both_part}", f"output/{both_part}")

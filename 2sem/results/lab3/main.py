@@ -62,18 +62,24 @@ def create_filtered_and_diff_image(start_path, filtered_path, diff_path):
 
     cv2.imwrite(diff_path, np.array(diff))
 
-#  В файле f_d_i лежат изображения отфильтрованные и их различие с исходным изображением
+
+#  В файле output лежат изображения отфильтрованные и их различие с исходным изображением
 
 
 if __name__ == "__main__":
-    images = [["1.jpeg", "2.jpg"], ["1.png", "2.png", "3.png"], ["1.jpeg", "2.jpeg", "3.jpeg"], ["1.png", "2.png","3.png","4.jpg","5.jpeg",]]
+    images = [
+        ["1.jpeg", "2.jpg"],
+        ["1.png", "2.png", "3.png"],
+        ["1.jpeg", "2.jpeg", "3.jpeg"],
+        ["1.png", "2.png", "3.png", "4.jpg", "5.jpeg"]
+    ]
 
     for i in range(1, len(images) + 1):
         for element in images[i - 1]:
             both_part = f"{i}/{element}"
             print(both_part)
             create_filtered_and_diff_image(
-                f"bin_imgs/{i}/{element}",
-                f"f_d_i/{i}/f_{element}",
-                f"f_d_i/{i}/d_{element}"
+                f"input/{i}/{element}",
+                f"output/{i}/filtered_{element}",
+                f"output/{i}/diff_{element}"
             )
