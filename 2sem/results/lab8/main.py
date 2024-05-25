@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from os import path
 from functions import calculate_glcm, calculate_haralick_features_from_glcm, gamma_correction, to_semitone
-from lab8.report import generate_md_report
+from report import generate_md_report
 
 
 if __name__ == '__main__':
