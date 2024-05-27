@@ -8,6 +8,7 @@ def rgb_to_gray(rgb_image: np.array) -> np.array:
     return gray_image
 
 
+
 def balanced_thresholding(image: np.array) -> np.array:
     gray = rgb_to_gray(image)
     threshold = np.mean(gray)

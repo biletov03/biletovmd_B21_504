@@ -4,6 +4,7 @@ import cv2
 from helper import FeatureImage
 import csv
 
+from lab7.convertor import convert_symbols
 from lab7.segmentator import process_images
 
 
@@ -40,6 +41,7 @@ def save_to_csv(letter_dict, csv_file_name):
                 row.append(symbol)
                 row.append(proximity)
             writer.writerow(row)
+    convert_symbols(csv_file_name, csv_file_name)
 
 
 if __name__ == '__main__':
@@ -54,10 +56,9 @@ if __name__ == '__main__':
     ]
     features = {}
 
-    count_dict = {"wide": 32, "base": 33}
+    count_dict = {"wide": 32, "base": 33, "splited": 27}
     for image_name in input_symbols:
-        bin_img = load_image(f'../lab5/input/{image_name}/{image_name}.png')
-        symbol = FeatureImage(bin_img)
+        symbol = FeatureImage(load_image(f'../lab5/input/{image_name}/{image_name}.png'))
         feature_vector = [
             symbol.relative_weight_I(),
             symbol.relative_weight_II(),
@@ -69,7 +70,9 @@ if __name__ == '__main__':
             symbol.relative_inertia(0)
         ]
         features[image_name] = list(feature_vector)
-    image_paths = ["base", "wide"]
+    # image_paths = ["base", "wide"]
+
+    image_paths = ["splited"]
 
     for path in image_paths:
         process_images(path)

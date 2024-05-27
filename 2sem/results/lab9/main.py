@@ -29,16 +29,26 @@ def denoise(samples, sample_rate, method='butter', **kwargs):
         raise ValueError("Неизвестный метод фильтрации")
 
 
-def detect_high_energy_moments(spec, time_resolution, delta_t=0.1):
+def detect_high_energy_moments(spec, time_resolution, delta_t=0.1, freq_range=(40, 50)):
+    # Определение временного окна
     time_window = int(delta_t / time_resolution)
+
+    # Определение частотной окрестности
+    freq_start = int(freq_range[0])
+    freq_end = int(freq_range[1])
 
     moments = []
 
     for t in range(spec.shape[1] - time_window):
-        energy = np.sum(np.absolute(spec[:, t:t + time_window]) ** 2)
+        # Извлечение поддиапазона частот и временного окна из спектрограммы
+        sub_spec = spec[freq_start:freq_end, t:t + time_window]
+
+        # Вычисление энергии для указанного поддиапазона частот и временного окна
+        energy = np.sum(np.absolute(sub_spec) ** 2)
 
         moments.append((t * time_resolution, energy))
 
+    # Нахождение момента с максимальной энергией
     max_energy_moment = max(moments, key=lambda x: x[1])[0]
 
     return max_energy_moment

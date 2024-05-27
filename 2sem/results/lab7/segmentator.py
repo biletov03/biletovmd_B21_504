@@ -31,13 +31,13 @@ def load_and_threshold_image(image_path):
     return bin_img
 
 
-def find_segments(profile):
+def find_segments(profile, threshold=0):
     start = None
     segments = []
     for i, val in enumerate(profile):
-        if val > 0 and start is None:
+        if val > threshold and start is None:
             start = i
-        elif val == 0 and start is not None:
+        elif val <= threshold and start is not None:
             segments.append((start, i))
             start = None
     if start is not None:
@@ -49,34 +49,16 @@ def segment_characters(bin_img):
     profile_x = np.sum(bin_img, axis=0)
     profile_y = np.sum(bin_img, axis=1)
 
-    maps = {}
-    max_key = -1
-    max_value = 0
-    for i in range(len(profile_x)):
-        if profile_x[i] in maps:
-            maps[profile_x[i]] += 1
-        else:
-            maps[profile_x[i]] = 1
-        if maps[profile_x[i]] > max_value:
-            max_value = maps[profile_x[i]]
-            max_key = profile_x[i]
-
-    for i in range(len(profile_x)):
-        balance = (max_key + 300)
-        if profile_x[i] - balance >= 0:
-            profile_x[i] -= balance
-        else:
-            profile_x[i] = 0
-
-    segments_x = find_segments(profile_x)
-    segments_y = find_segments(profile_y)
-
+    segments_x = find_segments(profile_x, threshold=0)
     rectangles = []
+
     for sx in segments_x:
+        segment_slice = bin_img[:, sx[0]:sx[1]]
+        profile_y_segment = np.sum(segment_slice, axis=1)
+        segments_y = find_segments(profile_y_segment, threshold=0)
         for sy in segments_y:
             rectangles.append((sx[0], sy[0], sx[1], sy[1]))
     return rectangles
-
 
 def draw_rectangles(img, rectangles):
     for rect in rectangles:
